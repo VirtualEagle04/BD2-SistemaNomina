@@ -38,7 +38,7 @@ Federico Vargas Rozo
 
 ### 1. Iniciar las Bases de Datos en la VM
 
-1. En Oracle VirtualBox importa el archivo `Debian10-MongoDB-MySQL.ova` del repositorio.
+1. En Oracle VirtualBox importa el archivo `Debian10-MongoDB-MySQL.ova` del siguiente enlace Drive: ```https://drive.google.com/file/d/1s-GIyEzw7TZMhsUNFMIe_PV8pRAdM8Qv/view?usp=sharing```.
 2. Inicia la VM
 3. Deja la VM corriendo en segundo plano, pues los servicios SSH, MySQL y MongoDB estarán corriendo por defecto.
 
