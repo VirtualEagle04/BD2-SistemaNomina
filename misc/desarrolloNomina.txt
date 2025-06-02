@@ -1,0 +1,153 @@
+1. Crear registro Nomina
+	> id_empleado = empleado.id_empleado
+	> fecha_inicio = primer día hábil del mes
+	> fecha_fin = ultimo día hábil del mes
+	> total_devengado = 0
+	> total_deducido = 0
+	> total_apropiado = 0
+	> total_prestaciones = 0
+	> neto_pagado = 0
+	> gran_total = 0
+
+2. Crear registros DetalleNomina (Debería dispararse después de un INSERT en Nomina)
+	a. Devengados
+		1. Salario Base
+			> id_nomina = nomina.id_nomina
+			> id_concepto = conceptoNomina.id_concepto ([HECHO] Crear un nuevo registro llamado "Valor Fijo" con porcentaje 100%)
+			> monto_aplicado = empleado.id_cargo.salario_base (Mínimo: 1'423,500)
+			> porcentaje_aplicado = id_concepto -> conceptoNomina.porcentaje (100%)
+			> monto_final = monto_aplicado * (porcentaje_aplicado / 100) (1423500 * (100/100)) = 1'423,500.
+		2. Auxilio de Transporte (Si empleado.id_cargo.salario_base < 2'847,000. [2 SMMLV])
+			> id_nomina = ...
+			> id_concepto = ("Valor Fijo")
+			> monto_aplicado = 200,000.
+			> porcentaje_aplicado = id_concepto -> conceptoNomina.porcentaje (100%)
+			> monto_final = monto_aplicado * (porcentaje_aplicado / 100) (200,000. * (100/100)) = 200,000.
+		3. Recargo
+			> id_nomina = ...
+			> id_concepto = Asistencia donde id_empleado = id_empleado, Jornada con id_jornada = asistencia.id_jornada, id_recargo
+			> monto_aplicado = empleado.id_cargo.salario_base
+			> porcentaje_aplicado = id_concepto -> conceptoNomina.porcentaje (0%, 35%, 75%, 110%)
+			> monto_final = ...
+		4. Horas Extra
+			PROCESO: 
+			1. Calcular el número de horas extra: 
+				Para todas las asistencias del empleado, revisar si tiempo_salida > hora_fin (en Jornada con id_jornada de la Asistencia)
+				e ir aumentando un contador de las horas extra.
+			2. Calcular el valor de la hora ordinaria: 
+				empleado.id_cargo -> cargo.salario_base dividido 276
+				(46 horas semanales / 5 días laborales), multiplicado por 30 días trabajados al mes = 276 horas
+			3. Aplicar el porcentaje de la hora extra al valor de la hora ordinaria:
+				Si el empleado trabajo 2 horas extra en la jornada DIURNA, entonces tiene 25% sobre la hora ordinaria, 
+				osea: valor hora ordinaria * 1.25, y guardar el valor.
+			4. Multiplicar el numero de horas extra realizadas por el valor de la hora extra calculado: 
+				Si el empleado trabajo 2 horas extra, entonces: valor hora extra * 2, y ese debe ser el monto_final.
+			
+			> id_nomina = ...
+			> id_concepto = conceptoNomina.id_concepto (Dependiendo si es hora extra DIURNA, NOCTURNA, etc.)
+			> monto_aplicado = empleado.id_cargo -> cargo.salario_base / 264 (Valor de la hora ordinaria)
+			> porcentaje_aplicado = id_concepto -> conceptoNomina.porcentaje (25%, 75%, 100%, 150%)
+			> monto_final = N° horas extra * valor hora extra
+
+		NOTA: Al final de todas los devengados, sumar cada monto_final y guardarlo para nomina.total_devengado y demás detalles.
+
+	b. DEDUCCIONES
+		1. Salud
+			> id_nomina = ...
+			> id_concepto = ("Aportes a la Salud")
+			> monto_aplicado = total_devengado (sin Aux. Transporte)
+			> porcentaje_aplicado = id_concepto -> conceptoNomina.porcentaje (4%)
+			> monto_final = ...
+		2. Pensión
+			> id_nomina = ...
+			> id_concepto = ("Aportes a la Pensión")
+			> monto_aplicado = total_devengado (sin Aux. Transporte)
+			> porcentaje_aplicado = id_concepto -> conceptoNomina.porcentaje (4%)
+			> monto_final = ...
+
+		NOTA: Al final de todas las deducciones, sumar cada monto_final y guardarlo para nomina.total_deducido y demás detalles.
+
+	c. APROPIACIONES
+		1. Seguridad Social -> Salud
+			> id_nomina = ...
+			> id_concepto = ("Salud")
+			> monto_aplicado = total_devengado (sin Aux. Transporte)
+			> porcentaje_aplicado = id_concepto -> conceptoNomina.porcentaje (8.5%)
+			> monto_final = ...
+		2. Seguridad Social -> Pensión
+			> id_nomina = ...
+			> id_concepto = ("Pensión")
+			> monto_aplicado = total_devengado (sin Aux. Transporte)
+			> porcentaje_aplicado = id_concepto -> conceptoNomina.porcentaje (12%)
+			> monto_final = ...
+		3. Seguridad Social -> ARL
+			> id_nomina = ...
+			> id_concepto = empleado.id_cargo -> cargo.id_riesgo
+			> monto_aplicado = total_devengado (sin Aux. Transporte)
+			> porcentaje_aplicado = id_concepto -> conceptoNomina.porcentaje (0.522%, 1.044%, 2.436%, 4.35%, 6.96%)
+			> monto_final = ...
+		4. Aportes Parafiscales -> SENA
+			> id_nomina = ...
+			> id_concepto = ("SENA")
+			> monto_aplicado = total_devengado (sin Aux. Transporte)
+			> porcentaje_aplicado = id_concepto -> conceptoNomina.porcentaje (2%)
+			> monto_final = ...
+		5. Aportes Parafiscales -> ICBF
+			> id_nomina = ...
+			> id_concepto = ("ICBF")
+			> monto_aplicado = total_devengado (sin Aux. Transporte)
+			> porcentaje_aplicado = id_concepto -> conceptoNomina.porcentaje (3%)
+			> monto_final = ..
+		5. Aportes Parafiscales -> Caja de Compensación Familiar
+			> id_nomina = ...
+			> id_concepto = ("Caja de Compensación Familiar")
+			> monto_aplicado = total_devengado (sin Aux. Transporte)
+			> porcentaje_aplicado = id_concepto -> conceptoNomina.porcentaje (4%)
+			> monto_final = ..
+
+		NOTA: Al final de todas las apropiaciones, sumar cada monto_final y guardarlo para nomina.total_apropiado y demás detalles.
+
+	d. PRESTACIONES SOCIALES
+		1. Cesantias
+			> id_nomina = ...
+			> id_concepto = ("Cesantías")
+			> monto_aplicado = empleado.id_cargo -> cargo.salario_base + Aux. Transporte (Si aplica)
+			> porcentaje_aplicado = id_concepto -> conceptoNomina.porcentaje (8.33%)
+			> monto_final = ...
+		2. Intereses de Cesantías
+			> id_nomina = ...
+			> id_concepto = ("Intereses de Cesantías")
+			> monto_aplicado = Cesantías
+			> porcentaje_aplicado = id_concepto -> conceptoNomina.porcentaje (12%)
+			> monto_final = ...
+		3. Prima
+			NOTA: La prima se paga semestralmente. El primer pago se realiza el 30 Junio, y el segundo el 20 Diciembre
+			> id_nomina = ...
+			> id_concepto = ("Prima")
+			> monto_aplicado = empleado.id_cargo -> cargo.salario_base + Aux. Transporte (Si aplica)
+			> porcentaje_aplicado = id_concepto -> conceptoNomina.porcentaje (8.33%)
+			> monto_final = ...
+		4. Vacaciones
+			> id_nomina = ...
+			> id_concepto = ("Vacaciones")
+			> monto_aplicado = empleado.id_cargo -> cargo.salario_base
+			> porcentaje_aplicado = id_concepto -> conceptoNomina.porcentaje (4.17%)
+			> monto_final = ...
+
+3. Actualizar el registro Nomina
+	> id_empleado = empleado.id_empleado
+	> fecha_inicio = primer día hábil del mes
+	> fecha_fin = ultimo día hábil del mes
+	> total_devengado = tota_devengado
+	> total_deducido = total_deducido
+	> total_apropiado = total_apropiado
+	> total_prestaciones = total_prestaciones
+	> neto_pagado = total_devengado - total_deducido
+	> gran_total = total_devengado + total_deducido + total_apropiado + total_prestaciones
+
+PD:
+- [HECHO] Crear una función/procedimiento que calcule si el empleado es aplicable para un Auxilio de Transporte con solo el id_empleado.
+- [HECHO] Quitar la columna id_jornada de Asistencia y ponerla en Empleado. Así es más facil saber el recargo aplicado a cada Empleado.
+- [HECHO] Añadir una columna total_prestaciones en Nomina, porque actualmente las prestaciones sociales no se toman en cuenta en neto_pagado.
+- [HECHO] La columna neto_pagado debería representar el total pagado al Empleado (total_devengado - total_deducido).
+- [HECHO] Añadir una columna gran_total en Nomina, que sea el total que el Empleador debe pagar (total_devengado + total_deducciones + total_apropiado + total_prestaciones).

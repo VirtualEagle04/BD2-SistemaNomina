@@ -1,0 +1,40 @@
+==== DEVENGADOS ====
+> Salario (Mínimo: 1'423,500.) (Valor Fijo)
+> Aux. Transporte: 200,000. (Valor Fijo)
+> Comisiones/Bonos (Valor Fijo)
+> Horas Extras:
+	- Hora Extra Diurna: 25% (Porcentaje)
+	- Hora Extra Nocturna: 75% (Porcentaje)
+	- Hora Extra Diurna Dominical/Festiva: 100% (Porcentaje)
+	- Hora Extra Nocturna Dominical/Festiva: 150% (Porcentaje)
+> Recargos:
+	- Recargo Diurno (No Existe): 0% (Porcentaje)
+	- Recargo Nocturno: 35% (Porcentaje)
+	- Recargo Dominical/Festivo: 75% (Porcentaje)
+	- Recargo Nocturno Dominical/Festivo: 110% (Porcentaje)
+
+==== DEDUCCIONES ====
+> Seguridad Social:
+	- Aportes a la Salud: 4% (Porcentaje)
+	- Aportes a la Pensión: 4% (Porcentaje)
+
+==== APROPIACIONES ====
+> Seguridad Social:
+	- Salud: 8.5% (Porcentaje)
+	- Pensión: 12% (Porcentaje)
+	- ARL:
+		~ Riesgo I: 0.522% (Porcentaje)
+		~ Riesgo II: 1.044% (Porcentaje)
+		~ Riesgo III: 2.436% (Porcentaje)
+		~ Riesgo IV: 4.35% (Porcentaje)
+		~ Riesgo V: 6.96% (Porcentaje)
+> Aportes Parafiscales:
+	- SENA: 2% (Porcentaje)
+	- ICBF: 3% (Porcentaje)
+	- Caja de Compensación Familiar: 4% (Porcentaje)
+
+==== PRESTACIONES SOCIALES ====
+> Cesantías: 8.33% (Porcentaje) ([Salario + Aux. Transporte] x 8.33%) (Anualmente)
+> Intereses de Cesantías: 12% (Porcentaje) (Anualmente)
+> Prima: 8.33% (Porcentaje) ([Salario + Aux. Transporte] x 8.33%) (Semestralmente: 50% Junio 30, 50% Diciembre 20)
+> Vacaciones: 4.17% (Porcentaje) (Salario x 4.17%) (Mensualmente)

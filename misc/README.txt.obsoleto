@@ -1,0 +1,123 @@
+VERSIÓN: 2
+FECHA: 5/1/2025
+DESCRIPCIÓN: Orden de ejecución del aplicativo
+CREDENCIALES IMPORTANTES:
+	
+	--------------------------------------------
+	Oracle Linux 9.4 (Release 9, Update 4)
+	username: fede
+	password: 123
+	--------------------------------------------
+
+	--------------------------------------------
+	MySQL Community Server 8.0.41
+	user: dev
+	password: soloMYSQL_04
+	host: localhost
+	port: 3360
+	--------------------------------------------
+
+
+==== INICIAR BASE DE DATOS MySQL ====
+1. Iniciar la Maquina Virtual (Las credenciales para la máquina virtual se encuentran en la descripción de la máquina virtual, en VirtualBox)
+2. Abrir una terminal y ejecutar:
+	> Desktop/mysql_startup.sh (Es un script shell que hice para facilitar el inicio de la Base de Datos)
+	Esto va a solicitar la clave del usuario de la máquina virtual, que nuevamente, es 123
+
+🟢 En este punto, la BD ya está prendida y toca mantener la máquina virtual corriendo.
+🟢 De ahora en adelante, los siguientes pasos se realizan en la máquina local (Windows)
+
+==== INICIAR BACKEND ====
+1. Abrir VS Code (o el IDE que estén utilizando) y abrir la carpeta "backend" que es una carpeta dentro de la carpeta madre "ProjFinal_BD2"
+2. Abrir una terminal ahí en VS Code y confirmar que el entorno es el correcto:
+	> npm ls 
+	Debe salirles la ruta del directorio hasta la carpeta "backend" y todas las dependencias que tiene el backend (dotenv, express, etc.)
+3. Para iniciar el servidor backend:
+	> npm run dev
+	Debe salirles algo similar a esto:
+	
+		> backend@1.0.0 dev
+		> node index.js
+
+		🟡 Iniciando túnel SSH...
+		🟢 Servidor Express escuchando en http://localhost:3001
+		🟢 Conexión por túnel SSH establecida! (fede@127.0.0.1:22)
+		🟡 Iniciando conexión al servidor MySQL...
+		🟢 Conexión al servidor MySQL establecida!
+		┌ ───────┬─────────────────────── ┐
+		│ (index) │ Tables_in_nomina    	 │
+		├ ───────┼─────────────────────── ┤
+		│ 0       │ 'Asistencia'        	 │
+		│ 1       │ 'Cargo'             	 │
+		│ 2       │ 'CategoriaConcepto' 	 │
+		│ 3       │ 'ConceptoNomina'    	 │
+		│ 4       │ 'DetalleNomina'     	 │
+		│ 5       │ 'Empleado'          	 │
+		│ 6       │ 'Jornada'           	 │
+		│ 7       │ 'Nomina'            	 │
+		│ 8       │ 'Riesgo'            	 │
+		└ ────── ┴─────────────────────── ┘
+
+🟢 En este punto, ya el backend debería estar conectado a la BD y toca mantenerlo encendido para el front.
+
+==== INICIAR FRONTEND ====
+1. Abrir otra ventana de VS Code (File > New Window) (Archivo > Nueva Ventana) y abrir la carpeta "vuetify_frontend" que es una carpeta dentro de la carpeta madre "ProjFinal_BD2"
+2. Abrir una terminal ahí en VS Code y confirmar que el entorno es el correcto:
+	> npm ls
+	Debe salirles la ruta del directorio hasta la carpeta "vuetify_frontend" y todas las dependencias que tiene el frontend (vite, sass, vue, vuetify, etc.)
+3. Para iniciar el servidor frontend:
+	> npm run dev
+	Debe salirles algo similar a esto:
+		
+		> vuetify_frontend@0.0.0 dev
+		> vite
+
+
+  		VITE v5.4.17  ready in 485 ms
+
+  		➜  Local:   http://localhost:3000/
+  		➜  Network: use --host to expose
+  		➜  press h + enter to show help
+
+4. Para ver la página, pues abren un navegador y ponen la dirección que les aparece: http://localhost:3000/
+
+🟢 En este punto, ya todo el aplicativo debería estar funcionando.
+
+==== CERRAR BACK Y FRONT ====
+En las dos terminales (tanto del back como del front) pueden ingresar: CTRL + C para cerrar los dos servidores.
+
+==== CERRAR BASE DE DATOS Y MÁQUINA VIRTUAL ====
+1. En la terminal de la máquina virtual, ingresen:
+	> Desktop/mysql_shutdown.sh (Que es otro script shell para simplificar la cerrada de la BD)
+	Esto va a solicitar la clave del usuario de la máquina virtual, que nuevamente, es 123
+
+🟢 La BD ya debería estar apagada.
+
+2. Apaguen la máquina virtual:
+	> Menu superior derecha
+	> Power Off/Log Out
+	> Power Off
+	> Quitarle el check a donde dice "Install pending software updates" para que no actualice el Oracle Linux y probablemente nos dañe la maquina virtual
+	> Power Off
+
+🟢 En este punto todo el aplicativo ya debería estar apagado.
+
+==== CONECTARSE A LA BD POR MySQL Workbench ====
+Si quieren conectarse a la BD para hacer código SQL en Workbench:
+1. Abran MySQL Workbench
+2. Añadir conexión
+3. Denle un nombre. Yo le tengo "BD2_VM_OracleLinuxR9U4_dev_MySQL"
+4. Connection Method: Standard TCP/IP over SSH
+5. SSH Hostname: 127.0.0.1:22
+6. SSH Username: fede
+7. SSH Password: Store in Vault > 123
+8. MySQL Hostname: localhost
+9. MySQL Server Port: 3306
+10. Username: dev
+11. Password: Store in Vault > soloMYSQL_04
+12. Test Connection para probar la conexión. (Claramente la máquina virtual y la BD deben estar corriendo)
+13. Ok
+14. Éxito! SIUUUUUUUUU
+
+
+

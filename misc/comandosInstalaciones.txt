@@ -1,0 +1,49 @@
+==== INSTALAR MySQL (Basado en: https://youtu.be/KnrO87rfCZ0?si=hyv9U5JYfXErLW3F) ====
+
+apt update -y
+apt upgrade -y
+apt-cache search mysql-server
+apt install default-mysql-server
+mysql_secure_installation
+	> Enter current password for root: 123
+	> Remove anonymous users?: Y
+	> Disallow root login remotely?: N
+	> Remove test database and access to it?: Y
+	> Reload privilege tables now?: Y
+sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+	> bind_address = 0.0.0.0
+
+==== INICIAR y DETENER SERVIDOR MySQL ====
+
+sudo systemctl start mysql
+sudo systemctl status mysql
+sudo systemctl stop MySQL
+
+==== INSTALAR MongoDB (Basado en: https://www.mongodb.com/docs/v4.4/tutorial/install-mongodb-on-debian/) ====
+
+sudo apt-get install gnupg curl
+curl -fsSL https://www.mongodb.org/static/pgp/server-4.4.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-4.4.gpg --dearmor
+echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-4.4.gpg ] http://repo.mongodb.org/apt/debian buster/mongodb-org/4.4 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
+sudo apt-get update
+sudo apt-get install -y mongodb-org=4.4.29 mongodb-org-server=4.4.29 mongodb-org-shell=4.4.29 mongodb-org-mongos=4.4.29 mongodb-org-tools=4.4.29
+echo "mongodb-org hold" | sudo dpkg --set-selections
+echo "mongodb-org-server hold" | sudo dpkg --set-selections
+echo "mongodb-org-shell hold" | sudo dpkg --set-selections
+echo "mongodb-org-mongos hold" | sudo dpkg --set-selections
+echo "mongodb-org-tools hold" | sudo dpkg --set-selections
+
+==== INICIAR y DETENER SERVIDOR MongoDB ====
+
+sudo systemctl start mongod
+sudo systemctl status mongod
+sudo systemctl stop mongod
+
+==== INSTALAR OpenSSH ====
+
+sudo apt install openssh-server
+
+==== INICIAR y DETENER SERVIDOR SSH ====
+
+sudo systemctl start ssh
+sudo systemctl status ssh
+sudo systemctl stop ssh
